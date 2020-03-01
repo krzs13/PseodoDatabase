@@ -8,7 +8,6 @@ class FileHandler:
         with open(f'{document_name}.csv', 'a+') as f:
             for value in values.split(', '):
                 formatted_values.append(f'"{value}"')
-            print(formatted_values)
             f.write(','.join(formatted_values) + '\n')
 
 

@@ -1,5 +1,5 @@
 # create document somedoc (aaa, bbb, ccc)
-# add (ddd, eee, fff) to somedoc
+# add (ddd, e   ee, fff) to somedoc
 
 from logic.front_controller import FrontController
 
