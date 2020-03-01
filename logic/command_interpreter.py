@@ -17,19 +17,14 @@ class CommandInterpreter:
                 }
         }
     
-    def interpreter(self, command):
+    def interpreter(self, command: str):
+        selected_command = None
         for command_name, valid_regex in self.VALID_REGEX.items():
             selected_command = re.findall(valid_regex['regex'], command, re.I)
             if len(selected_command):
                 selected_command = selected_command[0]
-                return {
+                return dict({
                     'command_name': command_name,
                     valid_regex['order'][0]: selected_command[0],
                     valid_regex['order'][1]: selected_command[1],
-                }
-                
-                
-
-        
-
-        
+                })
