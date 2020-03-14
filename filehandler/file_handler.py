@@ -30,15 +30,7 @@ class FileHandler:
                         print(file_list[row][index], end=(15 - len(file_list[row][index])) * (' '))
                     print()
 
-
-
             
-          
-
-
-            
-                
-
 if __name__ == "__main__":
     file = FileHandler()
     file.create_file_and_header('somedoc', 'name, surname, age')
@@ -46,3 +38,5 @@ if __name__ == "__main__":
     file.add_record('somedoc', 'Ro   cky, Daniell, 4')
     file.add_record('somedoc', 'Koles, Daniell, 2')
     file.select_columns('somedoc', '*')
+    print()
+    file.select_columns('somedoc', 'name, age, surname')
