@@ -8,8 +8,8 @@ class FrontController:
     def __init__(self):
         self.ui = UserInterface()
         self.ci = CommandInterpreter()
-        self.ui.say_hello()
         self.logic_dictionary = {'create': CreateLogic, 'add': AddLogic, 'select': SelectLogic}
+        self.ui.say_hello()
 
     def run(self):
         while True:
@@ -17,4 +17,3 @@ class FrontController:
             command_dictionary = self.ci.interpreter(command)
             self.logic_dictionary[command_dictionary.get('command_name')](command_dictionary.get('document_name'), 
             command_dictionary.get('columns'), command_dictionary.get('values'))
-

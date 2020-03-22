@@ -1,5 +1,6 @@
 # create document somedoc (aaa, bbb, ccc)
 # add (ddd, e   ee, fff) to somedoc
+# SELECT (name, age) from somedoc
 
 from logic.front_controller import FrontController
 

@@ -7,7 +7,6 @@ class DefaultLogic(ABC):
         self.columns = columns
         self.values = values
         self.file_handler = FileHandler()
-        self.file_operation()
 
     @abstractmethod
     def file_operation(self):
