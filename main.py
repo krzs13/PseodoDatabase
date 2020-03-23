@@ -1,6 +1,7 @@
 # create document somedoc (aaa, bbb, ccc)
 # add (ddd, e   ee, fff) to somedoc
 # SELECT (name, age) from somedoc
+# COUNT DISTINCT (name) FROM somedoc
 
 from logic.front_controller import FrontController
 

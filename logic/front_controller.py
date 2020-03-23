@@ -2,13 +2,15 @@ from userinterface.user_interface import UserInterface
 from logic.command_interpreter import CommandInterpreter
 from logic.logic_add import AddLogic
 from logic.logic_create import CreateLogic
+from logic.logic_count import CountLogic
 from logic.logic_select import SelectLogic
+
 
 class FrontController:
     def __init__(self):
         self.ui = UserInterface()
         self.ci = CommandInterpreter()
-        self.logic_dictionary = {'create': CreateLogic, 'add': AddLogic, 'select': SelectLogic}
+        self.logic_dictionary = {'create': CreateLogic, 'add': AddLogic, 'select': SelectLogic, 'count': CountLogic}
         self.ui.say_hello()
 
     def run(self):

@@ -3,17 +3,21 @@ import re
 class CommandInterpreter:
     def __init__(self):
         self.VALID_REGEX = {
-            'create':{
-                'regex' :'\s*CREATE\s+DOCUMENT\s+(\w*)\s+\((.*)\)',
-                'order' :['document_name', 'columns']
+            'create': {
+                'regex' : '\s*CREATE\s+DOCUMENT\s+(\w*)\s+\((.*)\)',
+                'order' : ['document_name', 'columns']
                 },
-            'add':{
-                'regex' :'\s*ADD\s+\((.*)\)\s+TO\s+(\w*)',
-                'order' :['values', 'document_name']
+            'add': {
+                'regex' : '\s*ADD\s+\((.*)\)\s+TO\s+(\w*)',
+                'order' : ['values', 'document_name']
                 },
-            'select':{
-                'regex' :'\s*SELECT\s+\((.*)\)\s+FROM\s+(\w*)',
-                'order' :['columns', 'document_name']
+            'select': {
+                'regex' : '\s*SELECT\s+\((.*)\)\s+FROM\s+(\w*)',
+                'order' : ['columns', 'document_name']
+                },
+            'count':{
+                'regex' : '\s*COUNT\s+DISTINCT\s+\((.*)\)\s+FROM\s+(\w*)',
+                'order' : ['columns', 'document_name']
                 }
         }
     
