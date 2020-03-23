@@ -15,9 +15,13 @@ class CommandInterpreter:
                 'regex' : '\s*SELECT\s+\((.*)\)\s+FROM\s+(\w*)',
                 'order' : ['columns', 'document_name']
                 },
-            'count':{
+            'count': {
                 'regex' : '\s*COUNT\s+DISTINCT\s+\((.*)\)\s+FROM\s+(\w*)',
                 'order' : ['columns', 'document_name']
+                },
+            'delete': {
+                'regex' : '\s*DELETE\s+FROM\s+(\w*)\s+WHERE\s+(.*)\s*=\s*(.*)',
+                'order' : ['document_name', 'columns', 'values']
                 }
         }
     
@@ -27,8 +31,16 @@ class CommandInterpreter:
             selected_command = re.findall(valid_regex['regex'], command, re.I)
             if len(selected_command):
                 selected_command = selected_command[0]
-                return dict({
-                    'command_name': command_name,
-                    valid_regex['order'][0]: selected_command[0],
-                    valid_regex['order'][1]: selected_command[1],
-                })
+                if command_name == 'delete':
+                    return dict({
+                        'command_name': command_name,
+                        valid_regex['order'][0]: selected_command[0],
+                        valid_regex['order'][1]: selected_command[1],
+                        valid_regex['order'][2]: selected_command[2]
+                    })
+                else:
+                    return dict({
+                        'command_name': command_name,
+                        valid_regex['order'][0]: selected_command[0],
+                        valid_regex['order'][1]: selected_command[1]
+                    })

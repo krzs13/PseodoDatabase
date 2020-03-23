@@ -2,6 +2,7 @@
 # add (ddd, e   ee, fff) to somedoc
 # SELECT (name, age) from somedoc
 # COUNT DISTINCT (name) FROM somedoc
+# DELETE FROM somedoc WHERE name=Koles
 
 from logic.front_controller import FrontController
 
