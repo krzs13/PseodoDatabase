@@ -3,6 +3,7 @@
 # SELECT (name, age) from somedoc
 # COUNT DISTINCT (name) FROM somedoc
 # DELETE FROM somedoc WHERE name=Koles
+# JSON somedoc
 
 from logic.front_controller import FrontController
 

@@ -22,6 +22,10 @@ class CommandInterpreter:
             'delete': {
                 'regex' : '\s*DELETE\s+FROM\s+(\w*)\s+WHERE\s+(.*)\s*=\s*(.*)',
                 'order' : ['document_name', 'columns', 'values']
+                },
+            'json': {
+                'regex' : '\s*JSON\s+(\w*)',
+                'order' : ['document_name']
                 }
         }
     
@@ -37,6 +41,11 @@ class CommandInterpreter:
                         valid_regex['order'][0]: selected_command[0],
                         valid_regex['order'][1]: selected_command[1],
                         valid_regex['order'][2]: selected_command[2]
+                    })
+                elif command_name == 'json':
+                    return dict({
+                        'command_name': command_name,
+                        valid_regex['order'][0]: selected_command
                     })
                 else:
                     return dict({

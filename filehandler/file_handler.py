@@ -50,6 +50,11 @@ class FileHandler:
                 formatted_row = [f'"{item}"' for item in row]
                 f.write(','.join(formatted_row) + '\n')
 
+    def json_converter(self, document_name: str):
+        file_list = self.file_to_list(document_name)
+        json_list = [{file_list[0][item]: file_list[row][item] for item in range(len(file_list[0]))} for row in range(1, len(file_list))]
+        return json_list
+
 
 if __name__ == "__main__":
     file = FileHandler()
@@ -58,5 +63,6 @@ if __name__ == "__main__":
     file.add_record('somedoc', 'Ro   cky, Daniell, 4')
     file.add_record('somedoc', 'Koles, Daniell, 2')
     file.add_record('somedoc', 'Koles, Daniell, 2')
+    # file.json_converter('somedoc')
     # file.count_items('somedoc', 'name')
     # file.delete_row('somedoc', 'name', 'Koles')
