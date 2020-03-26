@@ -1,4 +1,6 @@
+import pickle
 import re
+import zipfile
 
 class FileHandler:
     def create_file_and_header(self, document_name: str, columns: str):
@@ -55,6 +57,31 @@ class FileHandler:
         json_list = [{file_list[0][item]: file_list[row][item] for item in range(len(file_list[0]))} for row in range(1, len(file_list))]
         return json_list
 
+    def binary_converter(self, action: str, *document_name: str):
+        def save(documents: tuple):
+            with zipfile.ZipFile('somepackage.zip', 'w') as myzip:
+                for document in documents:
+                    with open(f'{document}.ddb', 'r') as f:
+                        with open(f'{document}.bin', 'wb') as b:
+                            pickle.dump(f.read(), b)
+                    myzip.write(f'{document}.bin')
+        def load(packages: tuple):
+            documents = []
+            document_name = ''
+            for package in packages:
+                with zipfile.ZipFile(f'{package}.zip', 'r') as myzip:
+                    myzip.extractall()
+                    documents = myzip.namelist()
+                    for document in documents:
+                        document_name = re.match('\w+', f'{document}').group()
+                        with open(f'{document}', 'rb') as b:
+                            with open(f'{document_name}.ddb', 'w') as f:
+                                f.write(pickle.load(b))
+        if action == 'save':
+            return save(document_name)
+        elif action == 'load':
+            return load(document_name)
+
 
 if __name__ == "__main__":
     file = FileHandler()
@@ -63,6 +90,8 @@ if __name__ == "__main__":
     file.add_record('somedoc', 'Ro   cky, Daniell, 4')
     file.add_record('somedoc', 'Koles, Daniell, 2')
     file.add_record('somedoc', 'Koles, Daniell, 2')
+    # file.binary_converter('save', 'somedoc')
+    # file.binary_converter('load', 'somepackage')
     # file.json_converter('somedoc')
     # file.count_items('somedoc', 'name')
     # file.delete_row('somedoc', 'name', 'Koles')
