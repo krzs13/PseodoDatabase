@@ -69,10 +69,6 @@ class FileHandler:
 
     def binary_converter(self, action: str, document_name: str):
         names = document_name.split(', ')
-        if action == 'save':
-            return save(names)
-        elif action == 'load':
-            return load(names)
 
         def save(documents: list):
             package_name = input('Enter zip package name: ')
@@ -116,6 +112,11 @@ class FileHandler:
                             with open(f'{document_name}.ddb', 'w') as f:
                                 f.write(pickle.load(b))
                         os.remove(f'{document}')
+        
+        if action == 'save':
+            return save(names)
+        elif action == 'load':
+            return load(names)
 
 
 if __name__ == "__main__":
