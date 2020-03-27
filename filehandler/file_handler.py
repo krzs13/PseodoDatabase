@@ -9,6 +9,8 @@ class FileHandler:
         self.set_working_directory()
 
     def set_working_directory(self):
+        if not os.path.exists(f'{self.directory}'):
+            os.mkdir(self.directory)
         os.chdir(self.directory)
 
     def create_file_and_header(self, document_name: str, columns: str):
@@ -67,33 +69,53 @@ class FileHandler:
 
     def binary_converter(self, action: str, document_name: str):
         names = document_name.split(', ')
+        if action == 'save':
+            return save(names)
+        elif action == 'load':
+            return load(names)
+
         def save(documents: list):
-            package_name = input('Enter a zip package name: ')
+            package_name = input('Enter zip package name: ')
             package_directory = [['Zip package directory:']]
             package_directory.append([f'{self.directory}/{package_name}.zip'])
+            overwrite = ''
+            while os.path.exists(f'{package_name}.zip'):
+                overwrite = input(f'The {package_name}.zip already exists. Do you want to overwrite it? [Y/N]: ')
+                if overwrite.lower() == 'y':
+                    break
+                else:
+                    package_name = input('Enter new zip package name: ')
             with zipfile.ZipFile(f'{package_name}.zip', 'w') as myzip:
                 for document in documents:
                     with open(f'{document}.ddb', 'r') as f:
                         with open(f'{document}.bin', 'wb') as b:
                             pickle.dump(f.read(), b)
                     myzip.write(f'{document}.bin')
+                    os.remove(f'{document}.bin')
             return package_directory
+
         def load(packages: list):
             documents = []
             document_name = ''
+            package_name = ''
+            overwrite = ''
             for package in packages:
-                with zipfile.ZipFile(f'{package}.zip', 'r') as myzip:
+                package_name = package.split('/')[-1]  # last item in list is last element in path
+                with zipfile.ZipFile(f'{package_name}', 'r') as myzip:
                     myzip.extractall()
                     documents = myzip.namelist()
                     for document in documents:
                         document_name = re.match('\w+', f'{document}').group()
+                        while os.path.exists(f'{document_name}.ddb'):
+                            overwrite = input(f'{document_name}.ddb already exists. Do you want to overwrite it? [Y/N]: ')
+                            if overwrite.lower() == 'y':
+                                break
+                            else:
+                                document_name = input('Enter new document name: ')
                         with open(f'{document}', 'rb') as b:
                             with open(f'{document_name}.ddb', 'w') as f:
                                 f.write(pickle.load(b))
-        if action == 'save':
-            return save(names)
-        elif action == 'load':
-            return load(names)
+                        os.remove(f'{document}')
 
 
 if __name__ == "__main__":
@@ -103,8 +125,8 @@ if __name__ == "__main__":
     file.add_record('somedoc', 'Ro   cky, Daniell, 4')
     file.add_record('somedoc', 'Koles, Daniell, 2')
     file.add_record('somedoc', 'Koles, Daniell, 2')
-    file.binary_converter('save', 'somedoc')
-    # file.binary_converter('load', 'somepackage')
+    # file.binary_converter('save', 'somedoc')
+    # file.binary_converter('load', 'somepac')
     # file.json_converter('somedoc')
     # file.count_items('somedoc', 'name')
     # file.delete_row('somedoc', 'name', 'Koles')

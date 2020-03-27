@@ -4,6 +4,7 @@ from logic.logic_add import AddLogic
 from logic.logic_create import CreateLogic
 from logic.logic_count import CountLogic
 from logic.logic_delete import DeleteLogic
+from logic.logic_export import ExportLogic
 from logic.logic_import import ImportLogic
 from logic.logic_json import JsonLogic
 from logic.logic_select import SelectLogic
@@ -16,7 +17,7 @@ class FrontController:
         self.logic_dictionary = {
             'create': CreateLogic, 'add': AddLogic, 'select': SelectLogic, 
             'count': CountLogic, 'delete': DeleteLogic, 'json': JsonLogic,
-            'import': ImportLogic
+            'export': ExportLogic, 'import': ImportLogic
             }
         self.ui.say_hello()
 

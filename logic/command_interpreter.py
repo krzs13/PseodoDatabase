@@ -27,10 +27,14 @@ class CommandInterpreter:
                 'regex' : '\s*JSON\s+(\w*)',
                 'order' : ['document_name']
                 },
-            'import': {
-                'regex' : '\s*IMPORT\s+(.*)',
+            'export': {
+                'regex' : '\s*EXPORT\s+(.*)',
                 'order' : ['document_name']
-            }
+                },
+            'import': {
+                'regex' : '\s*IMPORT\s+FROM\s+(.*)',
+                'order' : ['document_name']
+                }
         }
     
     def interpreter(self, command: str):
@@ -46,7 +50,7 @@ class CommandInterpreter:
                         valid_regex['order'][1]: selected_command[1],
                         valid_regex['order'][2]: selected_command[2]
                     })
-                elif command_name in ['json', 'import']:
+                elif command_name in ['json', 'export', 'import']:
                     return dict({
                         'command_name': command_name,
                         valid_regex['order'][0]: selected_command
