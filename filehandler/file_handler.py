@@ -1,8 +1,16 @@
+import os
 import pickle
 import re
 import zipfile
 
 class FileHandler:
+    def __init__(self, directory='database'):
+        self.directory = directory
+        self.set_working_directory()
+
+    def set_working_directory(self):
+        os.chdir(self.directory)
+
     def create_file_and_header(self, document_name: str, columns: str):
         formatted_columns = [f'"{column}"' for column in columns.split(', ')]
         with open(f'{document_name}.ddb', 'w') as f:
@@ -57,15 +65,20 @@ class FileHandler:
         json_list = [{file_list[0][item]: file_list[row][item] for item in range(len(file_list[0]))} for row in range(1, len(file_list))]
         return json_list
 
-    def binary_converter(self, action: str, *document_name: str):
-        def save(documents: tuple):
-            with zipfile.ZipFile('somepackage.zip', 'w') as myzip:
+    def binary_converter(self, action: str, document_name: str):
+        names = document_name.split(', ')
+        def save(documents: list):
+            package_name = input('Enter a zip package name: ')
+            package_directory = [['Zip package directory:']]
+            package_directory.append([f'{self.directory}/{package_name}.zip'])
+            with zipfile.ZipFile(f'{package_name}.zip', 'w') as myzip:
                 for document in documents:
                     with open(f'{document}.ddb', 'r') as f:
                         with open(f'{document}.bin', 'wb') as b:
                             pickle.dump(f.read(), b)
                     myzip.write(f'{document}.bin')
-        def load(packages: tuple):
+            return package_directory
+        def load(packages: list):
             documents = []
             document_name = ''
             for package in packages:
@@ -78,9 +91,9 @@ class FileHandler:
                             with open(f'{document_name}.ddb', 'w') as f:
                                 f.write(pickle.load(b))
         if action == 'save':
-            return save(document_name)
+            return save(names)
         elif action == 'load':
-            return load(document_name)
+            return load(names)
 
 
 if __name__ == "__main__":
@@ -90,7 +103,7 @@ if __name__ == "__main__":
     file.add_record('somedoc', 'Ro   cky, Daniell, 4')
     file.add_record('somedoc', 'Koles, Daniell, 2')
     file.add_record('somedoc', 'Koles, Daniell, 2')
-    # file.binary_converter('save', 'somedoc')
+    file.binary_converter('save', 'somedoc')
     # file.binary_converter('load', 'somepackage')
     # file.json_converter('somedoc')
     # file.count_items('somedoc', 'name')

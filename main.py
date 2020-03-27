@@ -4,6 +4,7 @@
 # COUNT DISTINCT (name) FROM somedoc
 # DELETE FROM somedoc WHERE name=Koles
 # JSON somedoc
+# IMPORT somedoc
 
 from logic.front_controller import FrontController
 
