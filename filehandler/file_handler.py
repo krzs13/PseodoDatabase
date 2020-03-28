@@ -2,46 +2,49 @@ import os
 import pickle
 import re
 import zipfile
+from typing import List
+
 
 class FileHandler:
-    def __init__(self, directory='database'):
-        self.directory = directory
-        self.set_working_directory()
+    def __init__(self, directory='database/', extension='.ddb'):
+        self.extension = extension if extension.startswith('.') else '.' + extension
+        self.directory = directory if directory.endswith('/') else directory + '/'
+        self.__prepare_working_directory()
 
-    def set_working_directory(self):
+    def __prepare_working_directory(self):
         if not os.path.exists(f'{self.directory}'):
             os.mkdir(self.directory)
-        os.chdir(self.directory)
 
-    def create_file_and_header(self, document_name: str, columns: str):
-        formatted_columns = [f'"{column}"' for column in columns.split(', ')]
-        with open(f'{document_name}.ddb', 'w') as f:
+    def __full_path(self, document_name):
+        return f'{self.directory}{document_name}{self.extension}'
+
+    def create_file_and_header(self, document_name: str, columns: List[str]):
+        formatted_columns = [f'"{column}"' for column in columns]
+        with open(self.__full_path(document_name), 'w') as f:
             f.write(','.join(formatted_columns) + '\n')
 
-    def add_record(self, document_name: str, values: str):
-        formatted_values = [f'"{value}"' for value in values.split(', ')]
-        with open(f'{document_name}.ddb', 'a+') as f:
+    def add_record(self, document_name: str, values: List[str]):
+        formatted_values = [f'"{value}"' for value in values]
+        with open(self.__full_path(document_name), 'a+') as f:
             f.write(','.join(formatted_values) + '\n')
 
-    def file_to_list(self, document_name: str):
+    def __file_to_list(self, document_name: str):
         file_list = []  # file loaded to list with lists (rows of file)
-        with open(f'{document_name}.ddb', 'r') as f:
+        with open(self.__full_path(document_name), 'r') as f:
             file_list = [[item for item in re.findall('[^"\n]+', line) if item != ','] for line in f.readlines()]
         return file_list
 
-    def select_columns(self, document_name: str, columns: str):
-        file_list = self.file_to_list(document_name)
-        selected_columns = []  # list of selected columns indexes
-        selected_list = []
-        if columns == '*':
-            selected_list = file_list
-        else:
-            selected_columns = [file_list[0].index(column) for column in columns.split(', ')]
-            selected_list = [[file_list[row][index] for index in selected_columns] for row in range(len(file_list))]
-        return selected_list
+    def select_columns(self, document_name: str, columns: List[str]):
+        file_list = self.__file_to_list(document_name)
 
-    def count_items(self, document_name: str, columns: str):
-        file_list = self.file_to_list(document_name)
+        if columns[0] == '*':
+            return file_list
+
+        selected_columns = [file_list[0].index(column) for column in columns]
+        return [[row[index] for index in selected_columns] for row in file_list]
+
+    def count_items(self, document_name: str, columns: List[str]):
+        file_list = self.__file_to_list(document_name)
         column_list = [file_list[row][file_list[0].index(columns)] for row in range(len(file_list))]
         items_counted = []  # [[item, count]]
         for index in range(len(column_list)):
@@ -52,10 +55,11 @@ class FileHandler:
                     items_counted.append([column_list[index], str(column_list[1:].count(column_list[index]))])
         return items_counted
 
-    def delete_row(self, document_name: str, columns: str, values: str):
-        file_list = self.file_to_list(document_name)
+    def delete_row(self, document_name: str, columns: List[str], values: List[str]):
+        file_list = self.__file_to_list(document_name)
         rows_index = [row for row in range(1, len(file_list)) if file_list[row][file_list[0].index(columns)] == values]
-        file_list = [file_list[row] for row in range(len(file_list)) if row not in rows_index]  # list without deleted rows
+        file_list = [file_list[row] for row in range(len(file_list)) if
+                     row not in rows_index]  # list without deleted rows
         formatted_row = []
         with open(f'{document_name}.ddb', 'w') as f:
             for row in file_list:
@@ -63,12 +67,13 @@ class FileHandler:
                 f.write(','.join(formatted_row) + '\n')
 
     def json_converter(self, document_name: str):
-        file_list = self.file_to_list(document_name)
-        json_list = [{file_list[0][item]: file_list[row][item] for item in range(len(file_list[0]))} for row in range(1, len(file_list))]
+        file_list = self.__file_to_list(document_name)
+        json_list = [{file_list[0][item]: file_list[row][item] for item in range(len(file_list[0]))} for row in
+                     range(1, len(file_list))]
         return json_list
 
-    def binary_converter(self, action: str, document_name: str):
-        names = document_name.split(', ')
+    def binary_converter(self, action: str, document_name: List[str]):
+        names = document_name
 
         def save(documents: list):
             package_name = input('Enter zip package name: ')
@@ -103,7 +108,8 @@ class FileHandler:
                     for document in documents:
                         document_name = re.match('\w+', f'{document}').group()
                         while os.path.exists(f'{document_name}.ddb'):
-                            overwrite = input(f'{document_name}.ddb already exists. Do you want to overwrite it? [Y/N]: ')
+                            overwrite = input(
+                                f'{document_name}.ddb already exists. Do you want to overwrite it? [Y/N]: ')
                             if overwrite.lower() == 'y':
                                 break
                             else:
@@ -112,7 +118,7 @@ class FileHandler:
                             with open(f'{document_name}.ddb', 'w') as f:
                                 f.write(pickle.load(b))
                         os.remove(f'{document}')
-        
+
         if action == 'save':
             return save(names)
         elif action == 'load':
