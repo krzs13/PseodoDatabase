@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-.idea
-venv
-*venv
-__pycache__
-*__pycache__*
-*.pyc
-database/
-=======
 __pycache__
 /venvPseudoDataBase/
 /.vscode/
@@ -15,4 +6,3 @@ __draft.py
 *.bin
 *.ddb
 *.zip
->>>>>>> changes
