@@ -1,13 +1,17 @@
-# create document somedoc (aaa, bbb, ccc)
-# add (ddd, e,,,,   ee, fff) to somedoc
+# create document somedoc (name, surname, age)
+# add (Pa,,,co, Daniell, 11) to somedoc
+# add (Ro   cky     , Daniell, 4) to somedoc
+# add (Ro   cky     , zzzzzz) to somedoc
 # SELECT (name, age) from somedoc
+# SELECT (aaaaa) from somedoc
 # COUNT DISTINCT (name) FROM somedoc
 # DELETE FROM somedoc WHERE name=Koles
 # JSON somedoc
-# EXPORT somedoc
-# IMPORT FROM database/somepac.zip
+# EXPORT somedoc, somedoc2
+# IMPORT FROM aaa
 
 from logic.front_controller import FrontController
+
 
 if __name__ == "__main__":
     front_controller = FrontController()

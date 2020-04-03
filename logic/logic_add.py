@@ -1,8 +1,9 @@
 from logic.logic_default import DefaultLogic
 
+
 class AddLogic(DefaultLogic):
     def __init__(self, document_name, columns, values):
-        super(AddLogic, self).__init__(document_name, columns, values)
+        super().__init__(document_name, columns, values)
         self.file_operation()
         
     def file_operation(self):

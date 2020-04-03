@@ -1,8 +1,11 @@
 import re
+from logic.config import Config
+
 
 
 class CommandInterpreter:
     def __init__(self):
+<<<<<<< HEAD
         # dobrze byłoby przenieść to do jakiegoś pliku conf.py
         self.VALID_REGEX = {
             'create': {
@@ -58,9 +61,21 @@ class CommandInterpreter:
     def interpreter(self, command: str):
         # definiowanie selected_command nie jest konieczne w tym miejscu - w każdej iteracji i tak nadajesz warość
         for command_name, valid_regex in self.VALID_REGEX.items():
+=======
+        self.config = Config()
+            
+    def __split_field(self, field: str, values: str):
+        if field in self.config.split_fields:
+            return [re.match('\S.*\S|\w|\s', value).group() for value in values.split(', ')]
+        return values
+
+    def interpreter(self, command: str):
+        for command_name, valid_regex in self.config.valid_regex.items():
+>>>>>>> changes
             selected_command = re.findall(valid_regex['regex'], command, re.I)
             # wartość będzie przechowywana przez całą iteracje
             if len(selected_command):
+<<<<<<< HEAD
                 selected_command = selected_command[0]
 
                 temp = {'command_name': command_name}
@@ -69,3 +84,11 @@ class CommandInterpreter:
                 )
 
                 return temp
+=======
+                selected_command = selected_command[0] if type(selected_command[0]) == tuple else tuple(selected_command)
+                command_dictionary = {'command_name': command_name}
+                command_dictionary.update({
+                    key: self.__split_field(key, selected_command[index]) for index, key in enumerate(valid_regex['order'])
+                })
+                return command_dictionary
+>>>>>>> changes
