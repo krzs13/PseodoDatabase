@@ -1,9 +1,10 @@
 from logic.logic_default import DefaultLogic
 from userinterface.user_interface import UserInterface
 
+
 class ExportLogic(DefaultLogic):
     def __init__(self, document_name, columns, values):
-        super(ExportLogic, self).__init__(document_name, columns, values)
+        super().__init__(document_name, columns, values)
         self.package_directory = self.file_operation()
         self.ui = UserInterface()
         self.ui.user_output(self.package_directory)
