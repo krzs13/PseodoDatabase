@@ -1,5 +1,6 @@
 from logic.logic_default import DefaultLogic
 
+
 class CreateLogic(DefaultLogic):
     def __init__(self, document_name, columns, values):
         super(CreateLogic, self).__init__(document_name, columns, values)
