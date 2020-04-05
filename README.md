@@ -10,6 +10,8 @@ COMMANDS
 7. Import files from zip package: IMPORT FROM zip_package_name
 8. Display document in JSON format: JSON file_name
 
-Commands are not case sensitive. 
+Commands are not case sensitive.
+
 User need to split values by comma and space ', ' -> PROPER: value1, value2 NOT PROPER: value1,value2.
+
 Commas and spaces are accepted in columns and values -> EXAMPLE: 'na,,,, me'.
