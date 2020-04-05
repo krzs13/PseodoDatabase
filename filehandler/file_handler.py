@@ -95,7 +95,7 @@ class FileHandler:
             raise errors.FileNotFound(document_name)    
 
     def binary_converter(self, action: str, document_name: List[str]):
-        names = document_name
+        names = document_name.split(', ')
 
         def save(documents: List[str]):
             for document in documents:
@@ -127,13 +127,14 @@ class FileHandler:
                 with zipfile.ZipFile(package_path, 'r') as myzip:
                     myzip.extractall()
                     for document in myzip.namelist():
-                        document_name = re.findall('\w+', f'{document}')[1]
+                        document_name = re.findall('\w+', f'{document}')[-2]
                         while os.path.exists(self.__full_path(document_name)):
                             overwrite = input(f'{document_name}.ddb already exists. Do you want to overwrite it? [Y/N]: ')
                             if overwrite.lower() == 'y':
                                 break
                             else:
                                 document_name = input('Enter new document name: ')
+                                break
                         with open(document, 'rb') as b:
                             with open(self.__full_path(document_name), 'w') as f:
                                 f.write(pickle.load(b))

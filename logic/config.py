@@ -26,11 +26,11 @@ class Config:
                 'order': ['document_name']
             },
             'export': {
-                'regex': '\s*EXPORT\s+(.*)',
+                'regex': '\s*EXPORT\s+FROM\s+(\w*)',
                 'order': ['document_name']
             },
             'import': {
-                'regex': '\s*IMPORT\s+FROM\s+(.*)',
+                'regex': '\s*IMPORT\s+FROM\s+(\w*)',
                 'order': ['document_name']
             }
         }

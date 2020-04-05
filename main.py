@@ -7,8 +7,8 @@
 # COUNT DISTINCT (name) FROM somedoc
 # DELETE FROM somedoc WHERE name=Koles
 # JSON somedoc
-# EXPORT somedoc, somedoc2
-# IMPORT FROM aaa
+# EXPORT FROM somedoc, somedoc2
+# IMPORT FROM bbb, aaa
 
 from logic.front_controller import FrontController
 
