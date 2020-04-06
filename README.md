@@ -16,5 +16,7 @@ User need to split values by comma and space ', ' -> PROPER: value1, value2 NOT 
 
 Commas and spaces are accepted in columns and values -> EXAMPLE: 'na,,,, me'.
 
+------------------------------------------------------------------------------------------------------
 Python version: 3.8.1
+
 Additional requirements: NONE
